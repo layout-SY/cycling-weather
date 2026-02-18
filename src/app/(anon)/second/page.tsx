@@ -5,6 +5,7 @@ import { AxiosInstance } from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSecondContext } from "../context/SecndContext";
+import { formatDistance } from "../result/page";
 
 export type LocationDataType = {
   lat: number;
@@ -147,12 +148,15 @@ export default function SecondPage() {
                     </h3>
                     <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
                       <span>
-                        거리 {((location.distance ?? 0) / 1000).toFixed(1)}km
+                        총 이동 거리 {formatDistance(location.distance ?? 0)}
                       </span>
                       <span>
                         예상 도착{" "}
                         {location.arriveTime
-                          ? `${location.arriveTime.slice(0, 2)}:${location.arriveTime.slice(2, 4)}`
+                          ? `${location.arriveTime.slice(
+                              0,
+                              2
+                            )}:${location.arriveTime.slice(2, 4)}`
                           : "-"}
                       </span>
                     </div>

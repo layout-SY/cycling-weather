@@ -23,6 +23,14 @@ function decodeName(name: string) {
   return name.replace(/&#x2F;/g, "/").replace(/&#x27;/g, "'");
 }
 
+export const formatDistance = (meters: number): string => {
+  console.log("meters", meters);
+  if (meters < 1000) {
+    return `${Math.round(meters)}m`;
+  }
+  return `${(meters / 1000).toFixed(1)}km`;
+};
+
 function getWeatherSummary(item: WeatherResultItem) {
   const tmp = item.weather.filteredTMP[0]?.fcstValue;
   const pop = item.weather.filteredPOP[0]?.fcstValue;
@@ -76,6 +84,7 @@ export default function ResultPage() {
         locationData: locationFormData,
         startDate: formData.startDate,
         startTime: formData.startTime,
+        fastForward: formData.fastForward,
       });
 
       if (response.status !== 200) {
@@ -184,7 +193,15 @@ export default function ResultPage() {
                             {formatTime(location.departureTime)}
                           </span>
                           <span>
-                            {((location.distance ?? 0) / 1000).toFixed(1)}km
+                            총 이동 거리{" "}
+                            {formatDistance(location.distance ?? 0)}
+                          </span>
+                          <span>
+                            쉬는 시간{" "}
+                            {location.breakTime &&
+                            parseInt(location.breakTime, 10) > 0
+                              ? `${location.breakTime}분`
+                              : "없음"}
                           </span>
                         </div>
                       </div>
